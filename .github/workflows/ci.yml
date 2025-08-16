@@ -1,32 +1,29 @@
-name: .NET CI
+name: .NET
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
   pull_request:
-    branches:
-      - main
+    branches: [ "main" ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout the repo
+        uses: actions/checkout@v4
 
-    - name: Setup .NET SDK
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
+      - name: Install the needed SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
 
-    - name: Restore dependencies
-      run: dotnet restore ./Backend-Automation-RE.sln
+      - name: Restore the packages
+        run: dotnet restore
 
-    - name: Build the solution
-      run: dotnet build ./Backend-Automation-RE.sln --no-restore --configuration Release
+      - name: Build the solution
+        run: dotnet build --no-restore
 
-    - name: Run tests
-      run: dotnet test ./Backend-Automation-RE.sln --no-build --verbosity normal
+      - name: Run all tests
+        run: dotnet test --no-build --verbosity normal
